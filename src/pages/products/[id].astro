@@ -1,0 +1,50 @@
+---
+import "../../styles/global.css";
+import Layout from "../../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+import { Image } from "astro:assets";
+import Header from '../../components/Header.astro';
+
+export async function getStaticPaths() {
+  const products = await getCollection("product");
+  return products.map((product) => ({
+    params: { id: product.data.slug },
+    props: { product },
+  }));
+}
+
+const { product } = Astro.props;
+const { image, price, sizes, color, material, available } = product.data;
+---
+
+<Layout>
+  <div class="flex flex-col min-h-screen">
+    <Header />
+    <main class="flex flex-1 items-center justify-center w-full">
+      <div class="flex flex-col md:flex-row justify-between items-center md:items-end gap-20 md:gap-0">
+        <div class="flex flex-col gap-8 md:gap-0">
+          <div class="text-2xl">
+            Стоимость: {price.toLocaleString('ru-RU')} руб.
+          </div>
+          <div class="flex flex-col text-sm">
+            <div>Размеры: {sizes}</div>
+            <div>Ткань: {material}</div>
+            <div>Цвет: {color}</div>
+          </div>
+        </div>
+        <div>
+          <Image src={image.src} alt={image.alt} width={800} height={800} />
+        </div>
+        <div>
+          {
+            available ? (
+              <a href="/checkout" class="text-2xl underline">Купить</a>
+            ) : (
+              <a href="/catalog" class="text-2xl underline">Распродано</a>
+            )
+          }
+        </div>
+      </div>
+    </main>
+  </div>
+</Layout>

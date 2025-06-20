@@ -1,0 +1,29 @@
+---
+import Header from '../components/Header.astro';
+import CatalogGrid from '../components/CatalogGrid.astro';
+import Layout from '../layouts/Layout.astro';
+import { Image } from 'astro:assets';
+import qrcode from '../assets/qrcode.png';
+---
+
+<Layout>
+  <div class="flex flex-col min-h-screen">
+    <Header />
+    <main class="flex flex-1 items-center justify-center w-full px-4">
+      <div class="flex flex-col items-center gap-8">
+        <Image src={qrcode} alt="QR code" width={400} height={400} />
+
+        <div class="flex flex-col items-center text-center gap-1">
+          <p>Перед оплатой</p>
+          <p>введите текстовое сообщение</p>
+          <p>«Покупка футболки и ваше ФИО»</p>
+        </div>
+
+        <div class="flex flex-col items-center text-center gap-1">
+          <p>Чек с оплатой отправляйте</p>
+          <p>в телеграм: <a href="https://t.me/insando" class="underline">@insando</a></p>
+        </div>
+      </div>
+    </main>
+  </div>
+</Layout>
