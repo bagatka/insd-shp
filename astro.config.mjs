@@ -5,7 +5,7 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig(
   {
     site: 'https://bagatka.github.io',
-    base: 'insd-shp',
+    base: '/insd-shp/',
     vite: {
       // @ts-ignore
       plugins: [tailwindcss()],
