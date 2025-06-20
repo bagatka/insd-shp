@@ -1,6 +1,6 @@
 ---
 image:
-  src: "./flowers.webp"
+  src: "flowers.webp"
   alt: "Flowers"
 slug: "flowers"
 price: 5000

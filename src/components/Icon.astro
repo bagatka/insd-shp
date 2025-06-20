@@ -1,7 +1,5 @@
 ---
 import "../styles/global.css";
-import { Image } from 'astro:assets';
-import Logo from "../assets/logo.webp";
 ---
 
-<Image src={Logo} alt="Insando Shop" width={300} height={300} />
+<img src={`${import.meta.env.BASE_URL}logo.webp`} alt="Insando Shop" width="300" height="300" />

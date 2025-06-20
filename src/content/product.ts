@@ -6,9 +6,9 @@ const product = defineCollection({
     pattern: "**/*.md",
     base: "./src/content/products",
   }),
-  schema: ({ image }) => z.object({
+  schema: z.object({
     image: z.object({
-      src: image(),
+      src: z.string(),
       alt: z.string(),
     }),
     slug: z.string(),

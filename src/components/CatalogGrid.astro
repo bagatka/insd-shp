@@ -1,6 +1,5 @@
 ---
 import "../styles/global.css";
-import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 const products = await getCollection('product');
 ---
@@ -13,7 +12,7 @@ const products = await getCollection('product');
         class="group block bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
       >
         <div class="relative aspect-square flex items-center justify-center">
-          <Image src={product.data.image.src} alt={product.data.image.alt} width={300} height={300} />
+          <img src={`${import.meta.env.BASE_URL}${product.data.image.src}`} alt={product.data.image.alt} width="300" height="300" />
           {!product.data.available && (
             <div class="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded text-sm">
               Sold Out
