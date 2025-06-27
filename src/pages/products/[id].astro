@@ -14,13 +14,21 @@ export async function getStaticPaths() {
 
 const { product } = Astro.props;
 const { image, price, sizes, color, material, available } = product.data;
+
+// Get all products sorted by order to find next/previous
+const allProducts = await getCollection("product");
+const sortedProducts = allProducts.sort((a, b) => a.data.order - b.data.order);
+const currentIndex = sortedProducts.findIndex(p => p.data.slug === product.data.slug);
+const previousProduct = currentIndex > 0 ? sortedProducts[currentIndex - 1] : null;
+const nextProduct = currentIndex < sortedProducts.length - 1 ? sortedProducts[currentIndex + 1] : null;
 ---
 
 <Layout>
   <div class="flex flex-col min-h-screen">
     <Header />
-    <main class="flex flex-1 items-center justify-center w-full">
-      <div class="flex flex-col md:flex-row justify-between items-center md:items-end gap-20 md:gap-0">
+    <main class="flex-1 flex items-center justify-center w-full">
+      <div class="flex flex-col md:flex-row justify-between items-center md:items-end gap-8 md:gap-2 w-full max-w-screen-xl px-4">
+        <!-- Product Details -->
         <div class="flex flex-col gap-8 md:gap-0">
           <div class="text-2xl">
             Стоимость: {price.toLocaleString('ru-RU')} руб.
@@ -31,17 +39,42 @@ const { image, price, sizes, color, material, available } = product.data;
             <div>Цвет: {color}</div>
           </div>
         </div>
+        
+        <!-- Product Image -->
         <div>
-          <img src={`${import.meta.env.BASE_URL}${image.src}`} alt={image.alt} width="800" height="800" />
+          <img src={`${import.meta.env.BASE_URL}${image.src}`} alt={image.alt} width="800" height="800" class="w-full max-w-sm md:max-w-none md:w-[800px] h-auto" />
         </div>
-        <div>
-          {
-            available ? (
-              <a href={`${import.meta.env.BASE_URL}checkout`} class="text-2xl underline">Купить</a>
-            ) : (
-              <a href={`${import.meta.env.BASE_URL}catalog`} class="text-2xl underline">Распродано</a>
-            )
-          }
+        
+        <!-- Navigation and Buy Button -->
+        <div class="flex flex-col justify-between h-auto md:h-[500px] w-full md:w-40">
+          <!-- Navigation arrows container - positioned in the middle on desktop -->
+          <div class="flex-1 flex items-center justify-center">
+            <div class="flex flex-row md:flex-col gap-4 md:gap-4">
+              {previousProduct && (
+                <a href={`${import.meta.env.BASE_URL}products/${previousProduct.data.slug}`} 
+                   class="flex items-center justify-center cursor-pointer transform rotate-180">
+                  <img src={`${import.meta.env.BASE_URL}arrow.svg`} width="30" height="30" alt="Previous product" />
+                </a>
+              )}
+              {nextProduct && (
+                <a href={`${import.meta.env.BASE_URL}products/${nextProduct.data.slug}`} 
+                   class="flex items-center justify-center cursor-pointer">
+                  <img src={`${import.meta.env.BASE_URL}arrow.svg`} width="30" height="30" alt="Next product" />
+                </a>
+              )}
+            </div>
+          </div>
+          
+          <!-- Buy/Sold out button - positioned at the bottom -->
+          <div class="flex justify-center mt-4 md:mt-0">
+            {
+              available ? (
+                <a href={`${import.meta.env.BASE_URL}checkout`} class="text-2xl underline">Купить</a>
+              ) : (
+                <a class="text-2xl underline">Распродано</a>
+              )
+            }
+          </div>
         </div>
       </div>
     </main>

@@ -7,6 +7,7 @@ const product = defineCollection({
     base: "./src/content/products",
   }),
   schema: z.object({
+    order: z.number(),
     image: z.object({
       src: z.string(),
       alt: z.string(),
